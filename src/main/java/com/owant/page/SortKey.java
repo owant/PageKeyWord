@@ -31,13 +31,15 @@ public class SortKey {
     /**
      * 配对翻译文本
      */
-    private static final String PATTERN_OF_KEYWORK = "I18n\\.t\\([\"']([^\\s:.)]{1,})[\"']\\)";
+    private static final String PATTERN_OF_KEY_WORD = "I18n\\.t\\([\"']([^\\s:.)]{1,})[\"']\\)";
     private TreeSet<String> pagesSet = new TreeSet<>();
 
 
     private Long createTime;
     private SimpleDateFormat format = new SimpleDateFormat("hh_mm_ss");
     private String saveFile;
+
+    private TreeSet<String> responseSet = new TreeSet<>();
 
     public SortKey(String transFilePath, String navigationFilePath, String saveHtmlPath) {
         this.transFilePath = transFilePath;
@@ -81,6 +83,24 @@ public class SortKey {
             }
             System.out.println("-------------------end--------------------");
             System.out.println("-------- open the html file in excel------");
+
+
+            FileTool.saveFileContentAppend(this.saveFile, HtmlCreator.getFormatRows(responseSet.size() + 1, "http response"));
+            for (String re : responseSet) {
+                String en = enSource.getString(re);
+                String de = deSource.getString(re);
+                String js = jaSource.getString(re);
+                if (en == null) {
+                    en = "";
+                }
+                if (de == null) {
+                    de = "";
+                }
+                if (js == null) {
+                    js = "";
+                }
+                FileTool.saveFileContentAppend(this.saveFile, HtmlCreator.getFormatCols(re, en, de, js));
+            }
 
 
             FileTool.saveFileContentAppend(this.saveFile, HtmlCreator.getHtmlBodyBottom());
@@ -128,15 +148,18 @@ public class SortKey {
                 String pageName = f.getName().replace(".js", "");
 
                 //读取当前key
-                TreeSet<String> keys = patternKey(pageContent, PATTERN_OF_KEYWORK);
+                TreeSet<String> keys = patternKey(pageContent, PATTERN_OF_KEY_WORD);
                 noLooperImport.clear();
                 getAllImport(f.getPath());
 
                 for (String item : noLooperImport) {
-                    TreeSet<String> childKeys = patternKey(FileTool.readFileContent(item), PATTERN_OF_KEYWORK);
+                    TreeSet<String> childKeys = patternKey(FileTool.readFileContent(item), PATTERN_OF_KEY_WORD);
                     for (String ck : childKeys) {
-                        if (!isNumeric(ck))
+                        if (!isNumeric(ck)) {//标识号
                             keys.add(ck);
+                        } else {
+                            responseSet.add(ck);
+                        }
                     }
                 }
 
@@ -178,7 +201,7 @@ public class SortKey {
         if (content.length() > 0) {
             TreeSet<String> tempImport = patternKey(content, PATTERN_OF_IMPORT_FILE);
             for (String item : tempImport) {
-                if (!item.endsWith(".png") && !item.endsWith(".json") ) {
+                if (!item.endsWith(".png") && !item.endsWith(".json")) {
                     File f = new File(new File(pagePath).getParentFile(), item + ".js");
                     String canonicalPath = f.getPath();
                     if (noLooperImport.add(canonicalPath)) {

@@ -13,7 +13,7 @@ public class SortKeyTest {
     public void main() {
         sortKey = new SortKey("E:\\Saft\\app\\Commons\\translations",
                 "E:\\Saft\\app\\ModuleEntry\\nutritionScale_esn00.js",
-                "E:\\IdeaProjects\\PageKeyWord\\src\\main\\java\\com\\owant\\page");
+                "F:\\open_source\\PageKeyWord\\src\\main\\java\\com\\owant\\page");
     }
 
 
