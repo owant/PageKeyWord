@@ -11,8 +11,11 @@ public class SortKeyTest {
 
     @Test
     public void main() {
-        sortKey = new SortKey("E:\\Saft\\app\\Commons\\translations",
-                "E:\\Saft\\app\\ModuleEntry\\nutritionScale_esn00.js",
+//        sortKey = new SortKey("E:\\Saft\\app\\Commons\\translations",
+//                "E:\\Saft\\app\\ModuleEntry\\wifioutlet_7a.js",
+//        "F:\\open_source\\PageKeyWord\\src\\main\\java\\com\\owant\\page");
+        sortKey = new SortKey("E:\\A72\\app\\Commons\\translations",
+                "E:\\A72\\app\\ModuleEntry\\RootComponent7A.js",
                 "F:\\open_source\\PageKeyWord\\src\\main\\java\\com\\owant\\page");
     }
 

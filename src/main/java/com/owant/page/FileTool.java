@@ -16,7 +16,7 @@ public class FileTool {
                 byte[] buffer = new byte[1024];
                 int len;
                 while ((len = inputStream.read(buffer)) != -1) {
-                    contentBuffer.append(new String(buffer, 0, len, "UTF-8"));
+                    contentBuffer.append(new String(buffer, 0, len, "utf-8"));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -37,7 +37,7 @@ public class FileTool {
         File file = new File(path);
         if (file.exists()) {
             try {
-                OutputStreamWriter fileOut = new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8");
+                OutputStreamWriter fileOut = new OutputStreamWriter(new FileOutputStream(file, true), "utf-8");
                 BufferedWriter bufferedWriter = new BufferedWriter(fileOut);
                 bufferedWriter.write(content);
                 bufferedWriter.close();
